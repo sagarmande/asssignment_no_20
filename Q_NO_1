@@ -1,0 +1,54 @@
+class Node:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+
+def find_max_subtree_sum(root):
+    if root is None:
+        return 0
+    
+    max_sum = float('-inf')
+    
+    def find_max_sum(node):
+        nonlocal max_sum
+        if node is None:
+            return 0
+        
+        left_sum = find_max_sum(node.left)
+        right_sum = find_max_sum(node.right)
+        
+        # Calculate the sum of the current subtree
+        subtree_sum = left_sum + right_sum + node.val
+        
+        # Update the maximum sum if the current subtree has a larger sum
+        max_sum = max(max_sum, subtree_sum)
+        
+        # Return the sum of the current subtree to the parent node
+        return subtree_sum
+    
+    find_max_sum(root)
+    
+    return max_sum
+
+# Test case 1
+root1 = Node(1)
+root1.left = Node(2)
+root1.right = Node(3)
+root1.left.left = Node(4)
+root1.left.right = Node(5)
+root1.right.left = Node(6)
+root1.right.right = Node(7)
+
+print(find_max_subtree_sum(root1))  # Output: 28
+
+# Test case 2
+root2 = Node(1)
+root2.left = Node(-2)
+root2.right = Node(3)
+root2.left.left = Node(4)
+root2.left.right = Node(5)
+root2.right.left = Node(-6)
+root2.right.right = Node(2)
+
+print(find_max_subtree_sum(root2))  # Output: 7
