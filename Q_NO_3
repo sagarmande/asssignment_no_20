@@ -1,0 +1,42 @@
+def is_level_order_bst(arr):
+    n = len(arr)
+    i = 0
+    
+    while i < n:
+        left_index = -1
+        right_index = -1
+        
+        # Find the index of the smallest element greater than arr[i] on the right side
+        for j in range(i + 1, n):
+            if arr[j] > arr[i]:
+                right_index = j
+                break
+        
+        # Find the index of the largest element smaller than arr[i] on the right side
+        for j in range(i + 1, right_index if right_index != -1 else n):
+            if arr[j] < arr[i]:
+                left_index = j
+                break
+        
+        # Check if there exists any element smaller than arr[i] on the right side
+        for j in range(right_index, n):
+            if arr[j] < arr[i]:
+                return "No"
+        
+        # Recursively check for the left and right subtrees
+        if left_index != -1:
+            i = left_index
+        elif right_index != -1:
+            i = right_index
+        else:
+            break
+    
+    return "Yes"
+
+# Test case 1
+arr1 = [7, 4, 12, 3, 6, 8, 1, 5, 10]
+print(is_level_order_bst(arr1))  # Output: Yes
+
+# Test case 2
+arr2 = [11, 6, 13, 5, 12, 10]
+print(is_level_order_bst(arr2))  # Output: No
